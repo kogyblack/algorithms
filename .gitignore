@@ -20,5 +20,5 @@
 *.out
 *.app
 
-# YouCompleteMe
-*.un~
+# Vim
+*~
