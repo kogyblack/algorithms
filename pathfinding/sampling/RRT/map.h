@@ -1,7 +1,9 @@
 #ifndef RRT_MAP_H
 #define RRT_MAP_H
 
-#include "boostaliases.h"
+#include <string>
+
+#include "basictypes.h"
 
 class Map
 {
@@ -10,14 +12,19 @@ public:
   void loadMap(std::string filename);
 
   // Getters
-  Point getSize() const;
-  Point getInitialPoint() const;
-  Rect  getGoalRect() const;
-  std::vector<Polygon> getPolygons() const;
+  Point const& getSize() const;
+  Point const& getInitialPoint() const;
+  Rect const&  getGoalRect() const;
+  std::vector<Polygon> const& getPolygons() const;
+
+  // Setters
+  void setSize(Point size);
+  void setInitialPoint(Point initialPoint);
+  void setGoalRect(Rect goal);
 
 private:
   Point size_;
-  Point initial_point_;
+  Point initialPoint_;
   Rect  goal_;
   std::vector<Polygon> polygons_;
 };
