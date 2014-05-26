@@ -8,7 +8,9 @@
 #include "graph.h"
 #include "map.h"
 
-int main()
+#include "samplebiased.h"
+
+int main(int argc, char** argv)
 {
   Map rrtmap;
   rrtmap.setSize(Point(10, 10));
@@ -17,12 +19,33 @@ int main()
 
   rrtbase::Graph rrtgraph;
 
-  double maxTime = 1000.0 / 10;
+  double maxTime = 1000.0 / 60;
 
+
+  std::cout << "RRT" << std::endl;
   rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend);           // RRT
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrg::extend);           // RRG
+  std::cout << "RRT (biased 1%)" << std::endl;
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend, false, SampleBiased(0.01));           // RRT
+  std::cout << "RRT (biased 5%)" << std::endl;
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend, false, SampleBiased(0.05));           // RRT
+
+  //std::cout << "RRG" << std::endl;
+  //rrtbase::plan(rrtmap, maxTime, rrtgraph, rrg::extend);           // RRG
+
+  std::cout << "RRT*" << std::endl;
   rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend);       // RRT*
+  std::cout << "RRT* (biased 1%)" << std::endl;
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, false, SampleBiased(0.01));       // RRT*
+  std::cout << "RRT* (biased 5%)" << std::endl;
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, false, SampleBiased(0.05));       // RRT*
+
+
+  std::cout << "Anytime RRT*" << std::endl;
   rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true); // Anytime RRT*
+  std::cout << "Anytime RRT* (biased 1%)" << std::endl;
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true, SampleBiased(0.01));           // RRT
+  std::cout << "Anytime RRT* (biased 5%)" << std::endl;
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true, SampleBiased(0.05));           // RRT
 
   return 0;
 }
