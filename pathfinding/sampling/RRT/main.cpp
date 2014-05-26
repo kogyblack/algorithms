@@ -3,6 +3,7 @@
 #include "basictypes.h"
 #include "rrt.h"
 #include "rrg.h"
+#include "rrtstar.h"
 #include "plan.h"
 #include "graph.h"
 #include "map.h"
@@ -16,8 +17,12 @@ int main()
 
   rrtbase::Graph rrtgraph;
 
-  rrtbase::plan(rrtmap, 16.66, rrtgraph, rrt::extend);
-  rrtbase::plan(rrtmap, 1000.0 / 60.0, rrtgraph, rrg::extend);
+  double maxTime = 1000.0 / 10;
+
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend);           // RRT
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrg::extend);           // RRG
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend);       // RRT*
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true); // Anytime RRT*
 
   return 0;
 }
