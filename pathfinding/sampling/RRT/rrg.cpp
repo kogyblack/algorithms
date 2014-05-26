@@ -9,19 +9,17 @@
 namespace rrg
 {
 
-const double resolution = 0.5;
-
 void extend(Point const& to,
             Map const& rrtmap,
             rrtbase::Graph& graph,
             int (*nearest)(rrtbase::Graph const& graph, Point const& point),
             Point (*steer)(Point const& from, Point const& to, double maxDistance),
             bool (*obstacleFree)(Map const& rrtmap, Point const& from, Point const& to),
-            std::vector<int> (*near)(rrtbase::Graph const& graph, Point const& point, double maxDistance))
+            std::vector<int> (*near)(rrtbase::Graph const& graph, int vertice, double maxDistance))
 {
   int verticeNearest = nearest(graph, to);
   Point pointNearest = graph.getVertices()[verticeNearest].point();
-  Point pointNew = steer(pointNearest, to, resolution);
+  Point pointNew = steer(pointNearest, to, rrtbase::resolution);
 
   if (obstacleFree(rrtmap, pointNearest, pointNew))
   {
@@ -29,9 +27,9 @@ void extend(Point const& to,
     graph.addEdge(verticeNearest, verticeNew);
 
     if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
-      graph.setCompleted(true);
+      graph.setCompleted(true, verticeNew);
 
-    std::vector<int> verticesNear = near(graph, pointNew, resolution * 4);
+    std::vector<int> verticesNear = near(graph, verticeNew, rrtbase::resolution * 4);
     for (int i = 0; i < verticesNear.size(); ++i)
     {
       if (obstacleFree(rrtmap, pointNew, graph.getVertices()[verticesNear[i]].point()))
@@ -40,6 +38,8 @@ void extend(Point const& to,
         graph.addEdge(verticesNear[i], verticeNew);
       }
     }
+
+    //graph.updateCost(verticeNew);
   }
 }
 

@@ -20,7 +20,7 @@ void extend(Point const& to,
             int (*nearest)(rrtbase::Graph const&, Point const&),
             Point (*steer)(Point const&, Point const&, double),
             bool (*obstacleFree)(Map const&, Point const&, Point const&),
-            std::vector<int> (*near)(rrtbase::Graph const&, Point const&, double));
+            std::vector<int> (*near)(rrtbase::Graph const&, int, double));
 
 }
 
