@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include <algorithm>
 #include <ctime>
 #include <limits>
 #include <random>
@@ -42,7 +43,7 @@ bool obstacleFree(Map const& m, Point const& from, Point const& to)
   return true;
 }
 
-std::vector<int> near(Graph const& graph, Point const& point, double maxDistance)
+std::vector<int> near(Graph const& graph, int vertice, double maxDistance)
 {
   return std::vector<int>();
 }
@@ -57,8 +58,6 @@ Point sample(Map const& rrtmap)
   static unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   static std::mt19937 generator(seed);
 
-  //double x = rrtmap.getSize().get<0>() * generator() / generator.max();
-  //double y = rrtmap.getSize().get<1>() * generator() / generator.max();
   double x = rrtmap.getSize().get(0) * generator() / generator.max();
   double y = rrtmap.getSize().get(1) * generator() / generator.max();
 
@@ -68,9 +67,6 @@ Point sample(Map const& rrtmap)
 int nearest(Graph const& graph, Point const& point)
 {
   assert(graph.getVertices().size() > 0);
-
-  //int nearest;
-  //double minDistance = std::numeric_limits<double>::max();
 
   std::vector<Graph::Vertice> vertices = graph.getVertices();
 
@@ -95,19 +91,16 @@ int nearest(Graph const& graph, Point const& point)
 
 Point steer(Point const& from, Point const& to, double maxDistance)
 {
-  double dist = sqrPythagoras(from, to);
-  if (dist <= maxDistance)
+  double distance = sqrPythagoras(from, to);
+  if (distance <= maxDistance)
   {
     return to;
   }
   else
   {
-    double t = maxDistance / dist;
-    //double dx = to.get<0>() - from.get<0>(),
-    //       dy = to.get<1>() - from.get<1>();
+    double t = ::sqrt(maxDistance / distance);
     double dx = to.get(0) - from.get(0),
            dy = to.get(1) - from.get(1);
-    //return Point(from.get<0>() + dx * t, from.get<1>() + dy * t);
     return Point(from.get(0) + dx * t, from.get(1) + dy * t);
   }
 }
@@ -129,11 +122,14 @@ bool obstacleFree(Map const& m, Point const& from, Point const& to)
   return true;
 }
 
-std::vector<int> near(Graph const& graph, Point const& point, double maxDistance)
+std::vector<int> near(Graph const& graph, int vertice, double maxDistance)
 {
   std::vector<int> ret;
 
   std::vector<Graph::Vertice> vertices = graph.getVertices();
+  Point point = vertices[vertice].point();
+  vertices.erase(vertices.begin() + vertice);
+
   for (int i = 0; i < vertices.size(); ++i)
   {
     //double sqrDist = boost::geometry::comparable_distance(point, vertices[i].point);
@@ -157,13 +153,13 @@ void plan(Map const& rrtmap,
                          int (*nearest)(const Graph&, Point const&),
                          Point (*steer)(Point const&, Point const&, double),
                          bool (*obstacleFree)(const Map&, Point const&, Point const&),
-                         std::vector<int> (*near)(const Graph&, Point const&, double)),
+                         std::vector<int> (*near)(const Graph&, int, double)),
           bool anytime,
           Point (*sample)(Map const& rrtmap),
           int (*nearest)(const Graph&, Point const&),
           Point (*steer)(Point const&, Point const&, double),
           bool (*obstacleFree)(const Map&, Point const&, Point const&),
-          std::vector<int> (*near)(const Graph&, Point const&, double))
+          std::vector<int> (*near)(const Graph&, int, double))
 {
   std::cout << "Initiating planning!" << std::endl;
 
@@ -189,8 +185,28 @@ void plan(Map const& rrtmap,
     i++;
   }
 
+  std::vector<Graph::Vertice> vertices = graph.getVertices();
+  /*
+  // Print graph
+  for (int i = 0; i < vertices.size(); ++i)
+  {
+    std::cout << "Vertice: " << i << " <- " << vertices[i].parent() << std::endl;
+    std::cout << "  {" << vertices[i].point().get(0) << ", " << vertices[i].point().get(1) << "}" << std::endl;
+    std::cout << "  cost: " << vertices[i].cost() << std::endl;
+    std::cout << std::endl;
+  }
+  //
+  */
+
   std::cout << "Iterations: " << i << std::endl;
-  std::cout << "Completed: " << graph.hasCompleted() << std::endl;
+  if (graph.hasCompleted())
+  {
+    std::cout << "Completed: " << graph.getLength() << std::endl;
+    double minDistance = sqrt(sqrPythagoras(vertices[0].point(), vertices[graph.getFinalVertice()].point()));
+    std::cout << "Ratio: " << graph.getLength() / minDistance << std::endl;
+  }
+
+  std::cout << std::endl;
 }
 
 }

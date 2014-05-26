@@ -21,7 +21,7 @@ Point sample(Map const& rrtmap);
 int nearest(Graph const& graph, Point const& point);
 Point steer(Point const& from, Point const& to, double maxDistance);
 bool obstacleFree(Map const& m, Point const& from, Point const& to);
-std::vector<int> near(Graph const& graph, Point const& point, double maxDistance);
+std::vector<int> near(Graph const& graph, int, double maxDistance);
 
 }
 
@@ -32,7 +32,7 @@ Point sample(Map const& rrtmap);
 int nearest(Graph const& graph, Point const& point);
 Point steer(Point const& from, Point const& to, double maxDistance);
 bool obstacleFree(Map const& m, Point const& from, Point const& to);
-std::vector<int> near(Graph const& graph, Point const& point, double maxDistance);
+std::vector<int> near(Graph const& graph, int, double maxDistance);
 
 }
 
@@ -46,13 +46,13 @@ void plan(Map const& rrtmap,
                          int (*nearest)(Graph const&, Point const&),
                          Point (*steer)(Point const&, Point const&, double),
                          bool (*obstacleFree)(Map const&, Point const&, Point const&),
-                         std::vector<int> (*near)(Graph const&, Point const&, double)),
+                         std::vector<int> (*near)(Graph const&, int, double)),
           bool anytime = false,
           Point (*sample)(Map const& rrtmap) = default_functions::sample,
           int (*nearest)(Graph const&, Point const&) = default_functions::nearest,
           Point (*steer)(Point const&, Point const&, double) = default_functions::steer,
           bool (*obstacleFree)(Map const&, Point const&, Point const&) = default_functions::obstacleFree,
-          std::vector<int> (*near)(const Graph&, Point const&, double) = default_functions::near);
+          std::vector<int> (*near)(const Graph&, int, double) = default_functions::near);
 
 }
 
