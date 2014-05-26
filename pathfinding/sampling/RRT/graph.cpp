@@ -1,4 +1,7 @@
+#include <iostream>
+#include <cmath>
 #include <algorithm>
+#include <limits>
 #include <cassert>
 
 #include "graph.h"
@@ -8,13 +11,10 @@ namespace rrtbase
 {
 
 // Vertice
-//Graph::Vertice::Vertice() : point_(), parent_(nullptr), cost_(0.0)
-Graph::Vertice::Vertice() : point_(), parent_(-1), cost_(0.0)
+Graph::Vertice::Vertice() : point_(), cost_(0.0)
 {}
 
-Graph::Vertice::Vertice(Point point)
-    //: point_(point), parent_(nullptr), cost_(0.0)
-    : point_(point), parent_(-1), cost_(0.0)
+Graph::Vertice::Vertice(Point point) : point_(point), cost_(0.0)
 {}
 
 Point& Graph::Vertice::point()
@@ -22,12 +22,15 @@ Point& Graph::Vertice::point()
   return point_;
 }
 
-/*
-Graph::Vertice* Graph::Vertice::parent()
+// Parent will work if the graph is a tree
+// in this case, the graph has one and only one
+// ancestor
+int Graph::Vertice::parent() const
 {
-  return parent_;
+  if (ancestors_.size() <= 0)
+    return -1;
+  return ancestors_[0];
 }
-*/
 
 Point const& Graph::Vertice::point() const
 {
@@ -41,7 +44,7 @@ double const& Graph::Vertice::cost() const
 
 void Graph::Vertice::addAncestor(int vertice)
 {
-  if (find(ancestors_.begin(), ancestors_.end(), vertice) == ancestors_.end())
+  if (find(ancestors_.begin(), ancestors_.end(), vertice) != ancestors_.end())
     return;
 
   ancestors_.push_back(vertice);
@@ -56,7 +59,7 @@ void Graph::Vertice::removeAncestor(int vertice)
 
 void Graph::Vertice::addDescendant(int vertice)
 {
-  if (find(descendants_.begin(), descendants_.end(), vertice) == descendants_.end())
+  if (find(descendants_.begin(), descendants_.end(), vertice) != descendants_.end())
     return;
 
   descendants_.push_back(vertice);
@@ -69,32 +72,6 @@ void Graph::Vertice::removeDescendant(int vertice)
     descendants_.erase(descendant);
 }
 
-/*
-void Graph::Vertice::updateCost(std::vector<Vertice>& vertices)
-{
-  if (ancestors_.size() <= 0)
-    return;
-
-  if (vertices.size() <= 0)
-    return;
-
-  int minAncestor = 0;
-  double minCost = calculateCost(0, vertices);
-  for (int i = 1; i < ancestors_.size(); ++i)
-  {
-    double newCost = calculateCost(i, vertices);
-    if (newCost < minCost)
-    {
-      minAncestor = i;
-      minCost = newCost;
-    }
-  }
-
-  parent_ = &vertices[ancestors_[minAncestor]];
-  cost_ = minCost;
-}
-*/
-
 std::vector<int> const& Graph::Vertice::getAncestors() const
 {
   return ancestors_;
@@ -105,13 +82,6 @@ std::vector<int> const& Graph::Vertice::getDescendants() const
   return descendants_;
 }
 
-/*
-double Graph::Vertice::calculateCost(int ancestor, std::vector<Vertice> const& vertices) const
-{
-  Graph::Vertice vert = vertices[ancestors_[ancestor]];
-  return vert.cost() + sqrPythagoras(vert.point(), point_);
-}
-*/
 
 
 // Graph
@@ -129,13 +99,12 @@ void Graph::addEdge(int parent, int child)
   assert(parent >= 0 && parent < vertices_.size());
   assert(child >= 0 && child < vertices_.size());
 
-  if (find(edges_.begin(), edges_.end(), Edge(parent, child)) == edges_.end())
+  if (find(edges_.begin(), edges_.end(), Edge(parent, child)) != edges_.end())
     return;
 
   edges_.push_back(Edge(parent, child));
   vertices_[parent].addDescendant(child);
   vertices_[child].addAncestor(parent);
-  //vertices_[child].updateCost(vertices_);
 }
 
 void Graph::removeEdge(int parent, int child)
@@ -149,12 +118,12 @@ void Graph::removeEdge(int parent, int child)
 
   vertices_[parent].removeDescendant(child);
   vertices_[child].removeAncestor(parent);
-  //vertices_[child].updateCost(vertices_);
 }
 
-void Graph::setCompleted(bool completed)
+void Graph::setCompleted(bool completed, int vertice)
 {
   completed_ = completed;
+  onGoalVertice_ = vertice;
 }
 
 void Graph::reset()
@@ -164,35 +133,47 @@ void Graph::reset()
   completed_ = false;
 }
 
-void Graph::updateCost(int vertice)
+int Graph::updateCost(int vertice)
 {
-  if (vertices_.size() <= 0)
-    return;
-
-  Vertice* vert = &vertices_[vertice];
-  std::vector<int> ancestors = vert->ancestors_;
-  if (ancestors.size() <= 0)
-    return;
-
-  int minAncestor = 0;
-  //double minCost = calculateCost(0, vertices);
-  double minCost = simulateCost(vertice,
-                                ancestors[0]);
-  for (int i = 1; i < vert->ancestors_.size(); ++i)
+  if (vertices_.empty())
   {
-    //double newCost = calculateCost(i, vertices);
-    double newCost = simulateCost(vertice,
-                                  ancestors[i]);
+    std::cerr << "Vertices vector empty!" << std::endl;
+    return -1;
+  }
+
+  std::vector<int> ancestors = vertices_[vertice].ancestors_;
+  if (ancestors.empty())
+  {
+    std::cerr << "Ancestors vector empty!" << std::endl;
+    return -1;
+  }
+
+  int minAncestor;
+  double minCost = std::numeric_limits<double>::max();
+  for (int ancestor : ancestors)
+  {
+    double newCost = vertices_[ancestor].cost_ + simulateCost(vertice, ancestor);
     if (newCost < minCost)
     {
-      minAncestor = i;
+      minAncestor = ancestor;
       minCost = newCost;
     }
   }
 
-  //vertices_[vertice].parent_ = &vertices_[ancestors[minAncestor]];
-  vertices_[vertice].parent_ = ancestors[minAncestor];
   vertices_[vertice].cost_ = minCost;
+  return minAncestor;
+}
+
+void Graph::setUniqueParent(int vertice, int parent)
+{
+  std::vector<int> ancestors = vertices_[vertice].ancestors_;
+
+  for (int ancestor : ancestors)
+  {
+    removeEdge(ancestor, vertice);
+  }
+
+  addEdge(parent, vertice);
 }
 
 // Getters
@@ -206,12 +187,20 @@ std::vector<Graph::Edge> const& Graph::getEdges() const
   return edges_;
 }
 
-Graph::Vertice* Graph::getMinimum() const
+int const& Graph::getFinalVertice() const
 {
-  return minimum_;
+  return onGoalVertice_;
 }
 
-bool Graph::hasCompleted() const
+double Graph::getLength() const
+{
+  if (!completed_)
+    return -1.0;
+
+  return vertices_[onGoalVertice_].cost();
+}
+
+bool const& Graph::hasCompleted() const
 {
   return completed_;
 }
@@ -223,7 +212,7 @@ double const& Graph::getCost(int vertice) const
 
 double Graph::simulateCost(int from, int to) const
 {
-  return sqrPythagoras(vertices_[from].point_, vertices_[to].point_);
+  return ::sqrt(sqrPythagoras(vertices_[from].point_, vertices_[to].point_));
 }
 
 }

@@ -20,24 +20,21 @@ public:
     Vertice(Point);
 
     Point& point();
-    //Vertice* parent();
 
+    int parent() const;
     Point const& point() const;
     double const& cost() const;
   private:
     void addAncestor(int);
     void removeAncestor(int);
+
     void addDescendant(int);
     void removeDescendant(int);
-    //void updateCost(std::vector<Vertice>&);
 
     std::vector<int> const& getAncestors() const;
     std::vector<int> const& getDescendants() const;
-    //double calculateCost(int, std::vector<Vertice> const&) const;
 
     Point point_;
-    //Vertice* parent_;
-    int parent_;
     std::vector<int> descendants_;
     std::vector<int> ancestors_;
     double cost_;
@@ -51,16 +48,19 @@ public:
   //void removeVertice(int vertice);
   void addEdge(int parent, int child);
   void removeEdge(int parent, int child);
-  void setCompleted(bool completed);
+  void setCompleted(bool completed, int vertice);
   void reset();
 
-  void updateCost(int vertice);
+  int updateCost(int vertice);
+
+  void setUniqueParent(int vertice, int parent);
 
   // Getters
   std::vector<Vertice> const& getVertices() const;
   std::vector<Edge> const& getEdges() const;
-  Vertice* getMinimum() const;
-  bool hasCompleted() const;
+  int const& getFinalVertice() const;
+  double getLength() const;
+  bool const& hasCompleted() const;
 
   double const& getCost(int vertice) const;
   double simulateCost(int from, int to) const;
@@ -68,7 +68,7 @@ public:
 private:
   std::vector<Vertice> vertices_;
   std::vector<Edge> edges_;
-  Vertice* minimum_;
+  int onGoalVertice_;
   bool completed_;
 };
 
