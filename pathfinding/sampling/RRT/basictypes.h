@@ -17,6 +17,13 @@ typedef boost::geometry::model::polygon<Point, true, true> Polygon;
 typedef boost::geometry::model::segment<Point>             Segment;
 */
 
+namespace rrtbase
+{
+
+const double resolution = 0.1;
+
+}
+
 // Since Boost is causing issues, the classes will be created
 class Point
 {
