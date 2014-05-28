@@ -8,6 +8,9 @@
 class Map
 {
 public:
+  // Constructor
+  Map();
+
   // Setters
   void loadMap(std::string filename);
 
@@ -16,6 +19,8 @@ public:
   Point const& getInitialPoint() const;
   Rect const&  getGoalRect() const;
   std::vector<Polygon> const& getPolygons() const;
+  //double getMaxTime() const;
+  void print() const;
 
   // Setters
   void setSize(Point size);
@@ -27,6 +32,8 @@ private:
   Point initialPoint_;
   Rect  goal_;
   std::vector<Polygon> polygons_;
+
+  //double maxTime_;
 };
 
 #endif
