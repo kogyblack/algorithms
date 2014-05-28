@@ -205,6 +205,17 @@ bool const& Graph::hasCompleted() const
   return completed_;
 }
 
+
+void Graph::backtrace() const
+{
+  if (!completed_)
+    return;
+
+  backtrace(onGoalVertice_);
+  std::cout << std::endl;
+}
+
+
 double const& Graph::getCost(int vertice) const
 {
   return vertices_[vertice].cost_;
@@ -213,6 +224,23 @@ double const& Graph::getCost(int vertice) const
 double Graph::simulateCost(int from, int to) const
 {
   return ::sqrt(sqrPythagoras(vertices_[from].point_, vertices_[to].point_));
+}
+
+
+// Private
+void Graph::backtrace(int vertice) const
+{
+  assert(vertice >= 0);
+  assert(vertice < vertices_.size());
+
+  if (vertices_[vertice].parent() != -1)
+  {
+    backtrace(vertices_[vertice].parent());
+    std::cout << " -> ";
+  }
+
+  Point point = vertices_[vertice].point();
+  std::cout << "(" << point.get(0) << ", " << point.get(1) << ")";
 }
 
 }

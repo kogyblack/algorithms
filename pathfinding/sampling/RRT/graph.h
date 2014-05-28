@@ -62,10 +62,14 @@ public:
   double getLength() const;
   bool const& hasCompleted() const;
 
+  void backtrace() const;
+
   double const& getCost(int vertice) const;
   double simulateCost(int from, int to) const;
 
 private:
+  void backtrace(int vertice) const;
+
   std::vector<Vertice> vertices_;
   std::vector<Edge> edges_;
   int onGoalVertice_;
