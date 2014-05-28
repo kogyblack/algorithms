@@ -45,7 +45,7 @@ bool Point::operator==(Point point)
 // Rect
 // Constructor
 Rect::Rect() =default;
-Rect::Rect(Point const& min_corner, Point const& max_corner)
+Rect::Rect(Point min_corner, Point max_corner)
     : min_corner_(min_corner), max_corner_(max_corner) {}
 
 // Setters

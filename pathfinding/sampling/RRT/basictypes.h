@@ -20,7 +20,7 @@ typedef boost::geometry::model::segment<Point>             Segment;
 namespace rrtbase
 {
 
-const double resolution = 0.5;
+const double resolution = 0.1;
 
 }
 
@@ -55,7 +55,7 @@ class Rect
 public:
   // Constructor
   Rect();
-  Rect(Point const& min_corner, Point const& max_corner);
+  Rect(Point min_corner, Point max_corner);
 
   // Setters
   Point& min_corner();
