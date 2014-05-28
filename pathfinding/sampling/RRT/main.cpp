@@ -7,45 +7,60 @@
 #include "plan.h"
 #include "graph.h"
 #include "map.h"
-
 #include "samplebiased.h"
+
+#include "placeholder_functions.h"
 
 int main(int argc, char** argv)
 {
+  if (argc != 2)
+  {
+    std::cerr << "Not enough parameters! Missing map parameter." << std::endl
+              << "e.g.: ./rrt.out map.txt" << std::endl;
+    return -1;
+  }
+
   Map rrtmap;
-  rrtmap.setSize(Point(10, 10));
-  rrtmap.setInitialPoint({0.5, 0.5});
-  rrtmap.setGoalRect({{9.5, 9.5}, {10, 10}});
+  rrtmap.loadMap(argv[1]);
 
   rrtbase::Graph rrtgraph;
 
-  double maxTime = 1000.0 / 60;
+  double maxTime = 1000.0 / 30;
 
-
+  /*
   std::cout << "RRT" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend);           // RRT
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend);
   std::cout << "RRT (biased 1%)" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend, false, SampleBiased(0.01));           // RRT
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend, false,
+                SampleBiased(0.01));
   std::cout << "RRT (biased 5%)" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend, false, SampleBiased(0.05));           // RRT
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend, false,
+                SampleBiased(0.05));
 
+  // RRG
   //std::cout << "RRG" << std::endl;
-  //rrtbase::plan(rrtmap, maxTime, rrtgraph, rrg::extend);           // RRG
+  //rrtbase::plan(rrtmap, maxTime, rrtgraph, rrg::extend);
 
+  // RRT*
   std::cout << "RRT*" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend);       // RRT*
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend);
   std::cout << "RRT* (biased 1%)" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, false, SampleBiased(0.01));       // RRT*
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, false,
+                SampleBiased(0.01));
   std::cout << "RRT* (biased 5%)" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, false, SampleBiased(0.05));       // RRT*
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, false,
+                SampleBiased(0.05));
+  */
 
-
+  // Anytime RRT*
   std::cout << "Anytime RRT*" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true); // Anytime RRT*
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true);
   std::cout << "Anytime RRT* (biased 1%)" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true, SampleBiased(0.01));           // RRT
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true,
+                SampleBiased(0.01));
   std::cout << "Anytime RRT* (biased 5%)" << std::endl;
-  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true, SampleBiased(0.05));           // RRT
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true,
+                SampleBiased(0.05));
 
   return 0;
 }
