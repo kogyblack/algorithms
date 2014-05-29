@@ -5,9 +5,9 @@
 
 double generator()
 {
-  static unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  static std::mt19937 mersenne(seed);
+  static std::mt19937 mersenne;
+  static std::uniform_real_distribution<double> distribution {0.0, 1.0};
 
-  return static_cast<double>(mersenne()) / mersenne.max();
+  return distribution(mersenne);
 }
 
