@@ -1,0 +1,6 @@
+-> Use "Nonmember begin and end"
+ |-> Change all vector.begin() and vector.end() to begin(vector) and
+end(vector), respectively
+
+-> Change, where possible, initializations to uniform initialization and
+initialization list
