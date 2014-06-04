@@ -3,12 +3,14 @@
 
 #include <vector>
 
+#include "basictypes.h"
+
 namespace rrtbase
 {
 class Graph;
 }
 
-class Point;
+//class Point;
 class Map;
 
 namespace rrt

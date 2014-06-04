@@ -1,15 +1,14 @@
 #include <iostream>
 
 #include "basictypes.h"
+#include "map.h"
+#include "graph.h"
+#include "plan.h"
 #include "rrt.h"
 #include "rrg.h"
 #include "rrtstar.h"
-#include "plan.h"
-#include "graph.h"
-#include "map.h"
 #include "samplebiased.h"
-
-#include "placeholder_functions.h"
+//#include "placeholder_functions.h"
 
 int main(int argc, char** argv)
 {

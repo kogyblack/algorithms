@@ -86,11 +86,19 @@ double Map::getMaxTime() const
 void Map::print() const
 {
   // print map
+  /*
   std::cout << "Size: " << size_.get(0) << " " << size_.get(1) << std::endl;
   std::cout << "Initial: " << initialPoint_.get(0) << " "
             << initialPoint_.get(1) << std::endl;
   std::cout << "Goal: " << goal_.min_corner().get(0) << " "
             << goal_.min_corner().get(1) << std::endl;
+  std::cout << "Number of polygons: " << polygons_.size() << std::endl;
+  */
+  std::cout << "Size: " << size_.get<0>() << " " << size_.get<1>() << std::endl;
+  std::cout << "Initial: " << initialPoint_.get<0>() << " "
+            << initialPoint_.get<1>() << std::endl;
+  std::cout << "Goal: " << goal_.min_corner().get<0>() << " "
+            << goal_.min_corner().get<1>() << std::endl;
   std::cout << "Number of polygons: " << polygons_.size() << std::endl;
 
   for (int i = 0; i < polygons_.size(); ++i)

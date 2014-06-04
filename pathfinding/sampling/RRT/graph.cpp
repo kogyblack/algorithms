@@ -4,6 +4,8 @@
 #include <limits>
 #include <cassert>
 
+#include <boost/geometry.hpp>
+
 #include "graph.h"
 #include "basictypes.h"
 
@@ -223,7 +225,9 @@ double const& Graph::getCost(int vertice) const
 
 double Graph::simulateCost(int from, int to) const
 {
-  return ::sqrt(sqrPythagoras(vertices_[from].point_, vertices_[to].point_));
+  //return ::sqrt(sqrPythagoras(vertices_[from].point_, vertices_[to].point_));
+  return boost::geometry::distance(vertices_[from].point_,
+                                   vertices_[to].point_);
 }
 
 
@@ -240,7 +244,8 @@ void Graph::backtrace(int vertice) const
   }
 
   Point point = vertices_[vertice].point();
-  std::cout << "(" << point.get(0) << ", " << point.get(1) << ")";
+  //std::cout << "(" << point.get(0) << ", " << point.get(1) << ")";
+  std::cout << "(" << point.get<0>() << ", " << point.get<1>() << ")";
 }
 
 }

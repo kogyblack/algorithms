@@ -1,11 +1,10 @@
 #ifndef RRT_BASICTYPES_H
 #define RRT_BASICTYPES_H
 
-#include <vector>
+//#include <vector>
 //#include <cmath>
 //#include <cassert>
 
-/*
 #include <boost/geometry/geometries/polygon.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 #include <boost/geometry/geometries/box.hpp>
@@ -15,7 +14,6 @@ typedef boost::geometry::model::d2::point_xy<double>       Point;
 typedef boost::geometry::model::box<Point>                 Rect;
 typedef boost::geometry::model::polygon<Point, true, true> Polygon;
 typedef boost::geometry::model::segment<Point>             Segment;
-*/
 
 namespace rrtbase
 {
@@ -24,6 +22,7 @@ const double resolution = 0.1;
 
 }
 
+/*
 // Since Boost is causing issues, the classes will be created
 class Point
 {
@@ -119,5 +118,6 @@ bool pointInsideRect(Point const&, Rect const&);
 // Since boost's distance isn't working to Points,
 // lets create a pythagoras function
 double sqrPythagoras(Point const& a, Point const& b);
+*/
 
 #endif

@@ -3,6 +3,7 @@
 
 #include "basictypes.h"
 
+/*
 // Constructor
 // Point
 Point::Point() : coord_{0.0, 0.0} {}
@@ -17,14 +18,15 @@ void Point::set(double const& value)
 }
 
 // Getters
-/*
+//
 template<std::size_t K>
 double const& Point::get() const
 {
   assert(K < 2);
   return coord_[K];
 }
-*/
+//
+
 double const& Point::get(int K) const
 {
   assert(K < 2);
@@ -116,24 +118,24 @@ Point const& Segment::to() const
 
 // Functions
 // Same name as boost functions
-/*
+//
 Point subtract_point(Point const& a, Point const& b)
 {
   Point sub(a.get<0>() - b.get<0>(), a.get<1>() - b.get<1>());
   return sub;
 }
-*/
+//
 
 bool intersects(Segment const& s, Polygon const& p)
 {
   assert(p.outer().size() > 1);
 
-  /*
+  //
   double aseg = s.to().get<1>() - s.from().get<1>(),
          bseg = s.from().get<0>() - s.to().get<0>(),
          xmseg = (s.to().get<0>() + s.from().get<0>()) / 2.0,
          ymseg = (s.to().get<1>() + s.from().get<1>()) / 2.0;
-  */
+  //
   double aseg = s.to().get(1) - s.from().get(1),
          bseg = s.from().get(0) - s.to().get(0),
          xmseg = (s.to().get(0) + s.from().get(0)) / 2.0,
@@ -149,30 +151,30 @@ bool intersects(Segment const& s, Polygon const& p)
          cross1 = false;
 
     // See if both points p0 and p1 are on different sides using the line segment
-    /*
+    //
     if (std::signbit(aseg * (p1.get<0>() - xmseg) + bseg * (p1.get<1>() - ymseg)) !=
         std::signbit(aseg * (p0.get<0>() - xmseg) + bseg * (p0.get<1>() - ymseg)))
-    */
+    //
     if (std::signbit(aseg * (p1.get(0) - xmseg) + bseg * (p1.get(1) - ymseg)) !=
         std::signbit(aseg * (p0.get(0) - xmseg) + bseg * (p0.get(1) - ymseg)))
       cross0 = true;
 
-    /*
+    //
     double a = p1.get<1>() - p0.get<1>(),
            b = p0.get<0>() - p1.get<0>(),
            xm = (p1.get<0>() + p0.get<0>()) / 2.0,
            ym = (p1.get<1>() + p0.get<1>()) / 2.0;
-    */
+    //
     double a = p1.get(1) - p0.get(1),
            b = p0.get(0) - p1.get(0),
            xm = (p1.get(0) + p0.get(0)) / 2.0,
            ym = (p1.get(1) + p0.get(1)) / 2.0;
 
     // See if both point of the segment are on different sides of the line p1-p0
-    /*
+    //
     if (std::signbit(a * (s.to().get<0>() - xm) + b * (s.to().get<1>() - ym)) !=
         std::signbit(a * (s.from().get<0>() - xm) + b * (s.from().get<1>() - ym)))
-    */
+    //
     if (std::signbit(a * (s.to().get(0) - xm) + b * (s.to().get(1) - ym)) !=
         std::signbit(a * (s.from().get(0) - xm) + b * (s.from().get(1) - ym)))
       cross1 = true;
@@ -187,12 +189,12 @@ bool intersects(Segment const& s, Polygon const& p)
 
 bool pointInsideRect(Point const& point, Rect const& rect)
 {
-  /*
+  //
   bool xInside = point.get<0>() >= rect.min_corner().get<0>() &&
                  point.get<0>() <= rect.max_corner().get<0>();
   bool yInside = point.get<1>() >= rect.min_corner().get<1>() &&
                  point.get<1>() <= rect.max_corner().get<1>();
-  */
+  //
   bool xInside = point.get(0) >= rect.min_corner().get(0) &&
                  point.get(0) <= rect.max_corner().get(0);
   bool yInside = point.get(1) >= rect.min_corner().get(1) &&
@@ -208,11 +210,13 @@ bool pointInsideRect(Point const& point, Rect const& rect)
 // lets create a pythagoras function
 double sqrPythagoras(Point const& a, Point const& b)
 {
-  /*
+  //
   double x = a.get<0>() - b.get<0>(),
          y = a.get<1>() - b.get<1>();
-  */
+  //
   double x = a.get(0) - b.get(0),
          y = a.get(1) - b.get(1);
   return (x * x) + (y * y);
 }
+
+*/

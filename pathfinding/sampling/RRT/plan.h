@@ -6,9 +6,11 @@
 //#include "placeholder_functions.h"
 #include "default_functions.h"
 
+#include "basictypes.h"
+
 class Map;
 class Graph;
-class Point;
+//class Point;
 
 namespace rrtbase
 {

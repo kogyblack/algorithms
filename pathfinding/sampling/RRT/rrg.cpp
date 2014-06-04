@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/geometry.hpp>
+
 #include "rrg.h"
 #include "basictypes.h"
 #include "graph.h"
@@ -26,7 +28,9 @@ void extend(Point const& to,
     int verticeNew = graph.addVertice(pointNew);
     graph.addEdge(verticeNearest, verticeNew);
 
-    if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
+    //if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
+    //  graph.setCompleted(true, verticeNew);
+    if (boost::geometry::within(pointNew, rrtmap.getGoalRect()))
       graph.setCompleted(true, verticeNew);
 
     std::vector<int> verticesNear = near(graph, verticeNew, rrtbase::resolution * 4);

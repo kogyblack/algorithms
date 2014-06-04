@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 
+#include <boost/geometry.hpp>
+
 #include "rrt.h"
 #include "basictypes.h"
 #include "graph.h"
@@ -28,7 +30,9 @@ void extend(Point const& to,
 
     graph.updateCost(verticeNew);
 
-    if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
+    //if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
+    //  graph.setCompleted(true, verticeNew);
+    if (boost::geometry::within(pointNew, rrtmap.getGoalRect()))
       graph.setCompleted(true, verticeNew);
   }
 }

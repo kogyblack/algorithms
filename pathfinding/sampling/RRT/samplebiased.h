@@ -1,7 +1,9 @@
 #ifndef SAMPLEBIASED_H
 #define SAMPLEBIASED_H
 
-class Point;
+#include "basictypes.h"
+
+//class Point;
 class Map;
 
 /*
