@@ -5,7 +5,6 @@
 
 #include "basictypes.h"
 
-//class Point;
 class Map;
 class Graph;
 

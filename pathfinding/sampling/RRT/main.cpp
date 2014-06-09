@@ -8,7 +8,7 @@
 #include "rrg.h"
 #include "rrtstar.h"
 #include "samplebiased.h"
-//#include "placeholder_functions.h"
+#include "placeholder_functions.h"
 
 int main(int argc, char** argv)
 {
@@ -24,9 +24,17 @@ int main(int argc, char** argv)
 
   rrtbase::Graph rrtgraph;
 
-  double maxTime = 1000.0 / 30;
+  double maxTime = 1000.0 / 60;
 
-  /*
+  std::cout << "Placeholder RRT" << std::endl;
+  rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend, true,
+                rrtbase::placeholder_functions::sample,
+                rrtbase::placeholder_functions::nearest,
+                rrtbase::placeholder_functions::steer,
+                rrtbase::placeholder_functions::obstacleFree,
+                rrtbase::placeholder_functions::near
+                );
+
   std::cout << "RRT" << std::endl;
   rrtbase::plan(rrtmap, maxTime, rrtgraph, rrt::extend);
   std::cout << "RRT (biased 1%)" << std::endl;
@@ -49,7 +57,6 @@ int main(int argc, char** argv)
   std::cout << "RRT* (biased 5%)" << std::endl;
   rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, false,
                 SampleBiased(0.05));
-  */
 
   // Anytime RRT*
   std::cout << "Anytime RRT*" << std::endl;
@@ -60,6 +67,16 @@ int main(int argc, char** argv)
   std::cout << "Anytime RRT* (biased 5%)" << std::endl;
   rrtbase::plan(rrtmap, maxTime, rrtgraph, rrtstar::extend, true,
                 SampleBiased(0.05));
+
+  // Print graph
+  //rrtgraph.print();
+
+  /*
+  if (rrtgraph.hasCompleted())
+  {
+    rrtgraph.backtrace();
+  }
+  */
 
   return 0;
 }
