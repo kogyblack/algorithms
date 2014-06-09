@@ -168,6 +168,7 @@ int Graph::updateCost(int vertice)
 
 void Graph::setUniqueParent(int vertice, int parent)
 {
+  // TODO: Improve this function!!!
   std::vector<int> ancestors = vertices_[vertice].ancestors_;
 
   for (int ancestor : ancestors)
@@ -228,6 +229,19 @@ double Graph::simulateCost(int from, int to) const
   //return ::sqrt(sqrPythagoras(vertices_[from].point_, vertices_[to].point_));
   return boost::geometry::distance(vertices_[from].point_,
                                    vertices_[to].point_);
+}
+
+void Graph::print() const
+{
+  for (int i = 0; i < vertices_.size(); ++i)
+  {
+    std::cout << "Vertice: " << i << " <- " << vertices_[i].parent()
+              << std::endl;
+    std::cout << "  {" << vertices_[i].point().get<0>() << ", "
+              << vertices_[i].point().get<1>() << "}" << std::endl;
+    std::cout << "  cost: " << vertices_[i].cost() << std::endl;
+    std::cout << std::endl;
+  }
 }
 
 

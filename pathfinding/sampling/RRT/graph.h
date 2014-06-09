@@ -67,6 +67,8 @@ public:
   double const& getCost(int vertice) const;
   double simulateCost(int from, int to) const;
 
+  void print() const;
+
 private:
   void backtrace(int vertice) const;
 
