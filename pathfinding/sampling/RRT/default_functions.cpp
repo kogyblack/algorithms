@@ -17,8 +17,6 @@ namespace default_functions
 
 Point sample(Map const& rrtmap)
 {
-  //double x = rrtmap.getSize().get(0) * generator();
-  //double y = rrtmap.getSize().get(1) * generator();
   double x = rrtmap.getSize().get<0>() * generator();
   double y = rrtmap.getSize().get<1>() * generator();
 
@@ -32,18 +30,11 @@ int nearest(Graph const& graph, Point const& point)
   std::vector<Graph::Vertice> vertices = graph.getVertices();
 
   int nearest = 0;
-  //double minDistance = sqrPythagoras(point, vertices[0].point());
-  double minDistance = boost::geometry::comparable_distance(point,
-                                                            vertices[0].point()
-                                                            );
 
   int numVerts = vertices.size();
   for (int i = 1; i < numVerts; ++i)
   {
-    //double dist = sqrPythagoras(point, vertices[i].point());
     double dist = boost::geometry::comparable_distance(
-        vertices[nearest].point(),
-        vertices[i].point());
 
     if (dist < minDistance)
     {
@@ -57,7 +48,6 @@ int nearest(Graph const& graph, Point const& point)
 
 Point steer(Point const& from, Point const& to, double maxDistance)
 {
-  //double distance = sqrPythagoras(from, to);
   double distance = boost::geometry::comparable_distance(from, to);
 
   if (distance <= maxDistance)
@@ -68,10 +58,6 @@ Point steer(Point const& from, Point const& to, double maxDistance)
   {
     double t = ::sqrt(maxDistance / distance);
 
-    //double dx = to.get(0) - from.get(0),
-    //       dy = to.get(1) - from.get(1);
-    //return Point(from.get(0) + dx * t, from.get(1) + dy * t);
-
     double dx = to.get<0>() - from.get<0>(),
            dy = to.get<1>() - from.get<1>();
     return Point(from.get<0>() + dx * t, from.get<1>() + dy * t);
@@ -80,18 +66,10 @@ Point steer(Point const& from, Point const& to, double maxDistance)
 
 bool obstacleFree(Map const& m, Point const& from, Point const& to)
 {
-  Segment seg(from, to);
 
   std::vector<Polygon> polygons = m.getPolygons();
   for (int i = 0; i < polygons.size(); ++i)
   {
-    return false;
-
-    //if (boost::geometry::intersects(seg, polygons[i]))
-    //  return false;
-
-    //if (intersects(seg, polygons[i]))
-    //  return false;
   }
 
   return true;
@@ -107,7 +85,6 @@ std::vector<int> near(Graph const& graph, int vertice, double maxDistance)
 
   for (int i = 0; i < vertices.size(); ++i)
   {
-    //double sqrDist = sqrPythagoras(point, vertices[i].point());
     double sqrDist = boost::geometry::comparable_distance(point,
                                                           vertices[i].point());
 
