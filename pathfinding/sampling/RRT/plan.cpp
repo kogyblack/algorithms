@@ -51,32 +51,9 @@ void plan(Map const& rrtmap,
     i++;
   }
 
-  std::vector<Graph::Vertice> vertices = graph.getVertices();
-  /*
-  // Print graph
-  for (int i = 0; i < vertices.size(); ++i)
-  {
-    std::cout << "Vertice: " << i << " <- " << vertices[i].parent()
-              << std::endl;
-    std::cout << "  {" << vertices[i].point().get(0) << ", "
-              << vertices[i].point().get(1) << "}" << std::endl;
-    std::cout << "  cost: " << vertices[i].cost() << std::endl;
-    std::cout << std::endl;
-  }
-  //
-  */
-
   std::cout << "Iterations: " << i << std::endl;
   if (graph.hasCompleted())
-  {
     std::cout << "Completed: " << graph.getLength() << std::endl;
-    //int finalVertice = graph.getFinalVertice();
-    //double minDistance = sqrt(sqrPythagoras(vertices[0].point(),
-    //                                        vertices[finalVertice].point()));
-    //std::cout << "Ratio: " << graph.getLength() / minDistance << std::endl;
-    graph.backtrace();
-  }
-
   std::cout << std::endl;
 }
 
