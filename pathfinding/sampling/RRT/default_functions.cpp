@@ -74,10 +74,18 @@ Point steer(Point const& from, Point const& to, double maxDistance)
 
 bool obstacleFree(Map const& m, Point const& from, Point const& to)
 {
+  Segment seg {from, to};
 
   std::vector<Polygon> polygons = m.getPolygons();
   for (int i = 0; i < polygons.size(); ++i)
   {
+    auto outer = polygons[i].outer();
+    for (int j = 0; j < outer.size(); ++j)
+    {
+      Segment curSeg {outer[j], outer[j + 1]};
+      if (boost::geometry::intersects(seg, curSeg))
+        return false;
+    }
   }
 
   return true;
