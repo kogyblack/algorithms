@@ -30,9 +30,7 @@ void extend(Point const& to,
 
     graph.updateCost(verticeNew);
 
-    //if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
-    //  graph.setCompleted(true, verticeNew);
-    if (boost::geometry::within(pointNew, rrtmap.getGoalRect()))
+    if (boost::geometry::covered_by(pointNew, rrtmap.getGoalRect()))
       graph.setCompleted(true, verticeNew);
   }
 }

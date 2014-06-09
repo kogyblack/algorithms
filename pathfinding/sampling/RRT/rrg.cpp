@@ -28,9 +28,7 @@ void extend(Point const& to,
     int verticeNew = graph.addVertice(pointNew);
     graph.addEdge(verticeNearest, verticeNew);
 
-    //if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
-    //  graph.setCompleted(true, verticeNew);
-    if (boost::geometry::within(pointNew, rrtmap.getGoalRect()))
+    if (boost::geometry::covered_by(pointNew, rrtmap.getGoalRect()))
       graph.setCompleted(true, verticeNew);
 
     std::vector<int> verticesNear = near(graph, verticeNew, rrtbase::resolution * 4);
