@@ -31,10 +31,18 @@ int nearest(Graph const& graph, Point const& point)
 
   int nearest = 0;
 
+  double minDistance = boost::geometry::comparable_distance(
+      point,
+      vertices[0].point()
+  );
+
   int numVerts = vertices.size();
   for (int i = 1; i < numVerts; ++i)
   {
     double dist = boost::geometry::comparable_distance(
+      point,
+      vertices[i].point()
+    );
 
     if (dist < minDistance)
     {
