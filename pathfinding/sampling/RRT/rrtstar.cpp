@@ -30,10 +30,12 @@ void extend(Point const& to,
   if (obstacleFree(rrtmap, pointNearest, pointNew))
   {
     int verticeNew = graph.addVertice(pointNew);
+    // XXX: Had to add the line below...
+    //      The loop on near vertices should add this, but it's not in some
+    //      cases
+    graph.addEdge(verticeNearest, verticeNew);
 
-    //if (pointInsideRect(pointNew, rrtmap.getGoalRect()))
-    //  graph.setCompleted(true, verticeNew);
-    if (boost::geometry::within(pointNew, rrtmap.getGoalRect()))
+    if (boost::geometry::covered_by(pointNew, rrtmap.getGoalRect()))
       graph.setCompleted(true, verticeNew);
 
     std::vector<int> verticesNear = near(graph, verticeNew, rrtbase::resolution * 4);
@@ -56,7 +58,9 @@ void extend(Point const& to,
     {
       if (obstacleFree(rrtmap, pointNew, vertices[verticeNear].point()))
       {
-        if (graph.getCost(verticeNear) > graph.getCost(verticeNew) + graph.simulateCost(verticeNear, verticeNew))
+        if (graph.getCost(verticeNear) >
+            graph.getCost(verticeNew) +
+            graph.simulateCost(verticeNear, verticeNew))
         {
           graph.removeEdge(vertices[verticeNear].parent(), verticeNear);
           graph.addEdge(verticeNew, verticeNear);
