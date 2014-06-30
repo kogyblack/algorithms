@@ -35,8 +35,8 @@ void plan(Map const& rrtmap,
 
   using namespace std::chrono;
 
-  high_resolution_clock::time_point initTime = high_resolution_clock::now();
-  high_resolution_clock::time_point curTime = initTime;
+  auto initTime = high_resolution_clock::now();
+  auto curTime = initTime;
   milliseconds timeSpan = duration_cast<milliseconds>(curTime - initTime);
 
   int i = 0;
