@@ -1,5 +1,5 @@
 # good kdtree implementation
-# source: https://github.com/gvd/kdtree/blob/master/test/tests.cpp
+# source: https://github.com/gvd/kdtree/
 
 #include <gtest/gtest.h>
 
