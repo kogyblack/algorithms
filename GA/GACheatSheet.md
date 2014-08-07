@@ -1,3 +1,25 @@
+Basic Genetic Algorithm
+=======================
+
+1. [Start] Generate random population.
+2. [Fitness] Evaluate the fitness of each individual.
+3. [New Population] Create the new population by repeating the next steps until
+   the new population is complete.
+  1. [Selection] Select two individuals from the population.
+  2. [Crossover] With a crossover probability, cross over the selected parents
+     to form new offspring. If no crossover was performed, offspring is an
+     exact copy of parents.
+  3. [Mutation] With a mutation probability, mutate new offspring at each locus
+     (position in chromossome).
+  4. [Accepting] Place new offspring in the new population.
+4. [Replace] Usa new generated population for the further run of algorithm.
+5. [Test] If the end condition is satisfied, stop and return the best solution
+   in current population.
+6. [Loop] Go to step 2.
+
+Seems that [Test] is on the wrong place.. It should be before the [New
+Population] was chosen.
+
 Cross-Over Selection
 ====================
 
