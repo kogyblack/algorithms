@@ -1,0 +1,16 @@
+size: 20
+start: [5, 5]
+genetics:
+  population: 100
+  elitism: True
+  elitismsize: 5
+  mutation: 0.005
+  # Crossover selection:
+  # - roulette: Fitness Proportionate Selection
+  # - tournament: Tournament Selection
+  # - truncation: Truncation Selection
+  # - rank: Ranking selection
+  crossover: tournament
+  crossoverrate: 0.7
+  tournamentsize: 10
+  truncationsize: 0.5
