@@ -16,7 +16,8 @@ int fastExponential(int base, int power)
 
   while (power)
   {
-    if (power % 2 == 1)
+    //if (power % 2 == 1)
+    if (power & 1)
       result *= base;
 
     //power /= 2;
